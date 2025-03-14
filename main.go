@@ -6,6 +6,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -22,22 +23,26 @@ func main() {
 
 	// Configurar la ventana principal
 	myWindow.SetContent(tabs)
-	myWindow.Resize(fyne.NewSize(500, 300))
+	myWindow.Resize(fyne.NewSize(854, 480))
 	myWindow.ShowAndRun()
 }
 
 func createTab1() *container.TabItem {
 	// Crear widgets
 	entry := widget.NewEntry()
-	button := widget.NewButton("Botón de acción", func() {
+	button := widget.NewButton("Cargar", func() {
 		// Acción del botón
 		fmt.Println("Botón presionado")
 	})
+	NumEntry := widget.NewEntry()
 
 	// Crear un contenedor para organizar los widgets
 	a := container.NewVBox(
 		widget.NewLabel("Nombre:"),
 		entry,
+		widget.NewLabel("Precio:"),
+		NumEntry,
+		layout.NewSpacer(),
 		button,
 	)
 
