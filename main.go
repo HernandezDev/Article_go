@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -25,7 +27,21 @@ func main() {
 }
 
 func createTab1() *container.TabItem {
-	a := widget.NewLabel("Contenido de la Pestaña 1")
+	// Crear widgets
+	entry := widget.NewEntry()
+	button := widget.NewButton("Botón de acción", func() {
+		// Acción del botón
+		fmt.Println("Botón presionado")
+	})
+
+	// Crear un contenedor para organizar los widgets
+	a := container.NewVBox(
+		widget.NewLabel("Nombre:"),
+		entry,
+		button,
+	)
+
+	// Retornar la pestaña con el contenedor como contenido
 	return container.NewTabItem("Cargar Articulo", a)
 }
 
@@ -36,5 +52,5 @@ func createTab2() *container.TabItem {
 
 func createTab3() *container.TabItem {
 	a := widget.NewLabel("Contenido de la Pestaña 3")
-	return container.NewTabItem("Mostrar Lista", a)
+	return container.NewTabItem("Listado Completo", a)
 }
