@@ -177,6 +177,10 @@ func Cargar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 func Consultar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 	//Entry
 	Entry := widget.NewEntry()
+	Entry.OnChanged = func(content string) {
+		// Filtrar contenido para permitir solo números y puntos decimales
+		Entry.SetText(filterInt(content))
+	}
 	//labels dinámicas
 	LabNombre := widget.NewLabel("")
 	LabPrecio := widget.NewLabel("")
@@ -220,6 +224,15 @@ func Mostrar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 func filterNumeric(content string) string {
 	return strings.Map(func(r rune) rune {
 		if (r >= '0' && r <= '9') || r == '.' { // Permitir números y el punto decimal
+			return r
+		}
+		return -1 // Eliminar caracteres no válidos
+	}, content)
+}
+
+func filterInt(content string) string {
+	return strings.Map(func(r rune) rune {
+		if r >= '0' && r <= '9' { // Permitir números
 			return r
 		}
 		return -1 // Eliminar caracteres no válidos
