@@ -202,7 +202,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 		Entry,
 		widget.NewLabel("Nombre:"),
 		container.NewHBox(layout.NewSpacer(), LabNombre, layout.NewSpacer()),
-		widget.NewLabel("Precio"),
+		widget.NewLabel("Precio:"),
 		container.NewHBox(layout.NewSpacer(), LabPrecio, layout.NewSpacer()),
 		layout.NewSpacer(),
 		BotConsultar,
