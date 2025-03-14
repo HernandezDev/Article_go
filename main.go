@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"database/sql"
 
@@ -34,7 +35,7 @@ func main() {
 	// Crea una tabla
 	createTable :=
 		`CREATE TABLE IF NOT EXISTS Articulos(
-	Id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Precio REAL);`
+	Id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT NOT NULL, Precio REAL NOT NULL);`
 	_, err = db.Exec(createTable)
 	if err != nil {
 		fmt.Println(err)
@@ -48,7 +49,70 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-
+	// Trigger para evitar que se inserten registros con el campo Nombre vacío o solo con espacios
+	createTriggerInsertNombre :=
+		`CREATE TRIGGER IF NOT EXISTS Insert_Nombre
+		BEFORE INSERT ON Articulos
+		FOR EACH ROW
+			BEGIN
+				SELECT CASE 
+				WHEN TRIM(NEW.Nombre) = '' THEN
+				RAISE(ABORT, 'Nombre no puede estar vacío ni contener solo espacios')
+			END;
+		END;`
+	_, err = db.Exec(createTriggerInsertNombre)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	// Trigger para evitar que se actualicen registros con el campo Nombre vacío o solo con espacios
+	createTriggerUpdateNombre :=
+		`CREATE TRIGGER IF NOT EXISTS Update_Nombre
+		BEFORE UPDATE ON Articulos		
+		FOR EACH ROW
+			BEGIN
+	 			SELECT CASE 
+				WHEN TRIM(NEW.Nombre) = '' THEN
+				RAISE(ABORT, 'Nombre no puede estar vacío ni contener solo espacios')
+			END;
+		END;`
+	_, err = db.Exec(createTriggerUpdateNombre)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	// Trigger para evitar que se inserten registros con el campo Precio menor o igual a cero
+	createTriggerInsertPrecio :=
+		`CREATE TRIGGER IF NOT EXISTS Insert_Precio
+		BEFORE INSERT ON Articulos
+		FOR EACH ROW
+			BEGIN
+				SELECT CASE
+				WHEN NEW.Precio <= 0 THEN
+				RAISE(ABORT, 'Precio debe ser mayor a cero')
+			END;
+		END;`
+	_, err = db.Exec(createTriggerInsertPrecio)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	// Trigger para evitar que se actualicen registros con el campo Precio menor o igual a cero
+	createTriggerUpdatePrecio :=
+		`CREATE TRIGGER IF NOT EXISTS Update_Precio
+		BEFORE UPDATE ON Articulos
+		FOR EACH ROW
+			BEGIN
+				SELECT CASE
+				WHEN NEW.Precio <= 0 THEN
+				RAISE(ABORT, 'Precio debe ser mayor a cero')
+			END;
+		END;`
+	_, err = db.Exec(createTriggerUpdatePrecio)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// Inicializar tabs con las pestañas iniciales
 	tabs := container.NewAppTabs(
 		Cargar(db),
@@ -71,6 +135,10 @@ func Cargar(db *sql.DB) *container.TabItem {
 		fmt.Println("Botón presionado")
 	})
 	NumEntry := widget.NewEntry()
+	NumEntry.OnChanged = func(content string) {
+		// Filtrar contenido para permitir solo números y puntos decimales
+		NumEntry.SetText(filterNumeric(content))
+	}
 
 	// Crear un contenedor para organizar los widgets
 	a := container.NewVBox(
@@ -114,4 +182,13 @@ func Consultar(db *sql.DB) *container.TabItem {
 func Mostrar(db *sql.DB) *container.TabItem {
 	a := widget.NewLabel("Contenido de la Pestaña 3")
 	return container.NewTabItem("Listado Completo", a)
+}
+
+func filterNumeric(content string) string {
+	return strings.Map(func(r rune) rune {
+		if (r >= '0' && r <= '9') || r == '.' { // Permitir números y el punto decimal
+			return r
+		}
+		return -1 // Eliminar caracteres no válidos
+	}, content)
 }
