@@ -41,6 +41,14 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	// crea un índice único para el campo Nombre
+	createIndexNombre :=
+		`CREATE UNIQUE INDEX IF NOT EXISTS idx_nombre ON Articulos(Nombre);`
+	_, err = db.Exec(createIndexNombre)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// Configurar la ventana principal
 	myWindow.SetContent(tabs)
 	myWindow.Resize(fyne.NewSize(854, 480))
