@@ -30,7 +30,15 @@ func main() {
 			}
 		}
 	}
-
+	// obtener la pestaña soltada
+	tabs.OnUnselected = func(unselectedTab *container.TabItem) {
+		for index, tab := range tabs.Items {
+			if tab == unselectedTab {
+				fmt.Printf("Índice de la pestaña soltada: %d\n", index)
+				break
+			}
+		}
+	}
 	// Configurar la ventana principal
 	myWindow.SetContent(tabs)
 	myWindow.Resize(fyne.NewSize(500, 300))
