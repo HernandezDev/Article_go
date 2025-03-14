@@ -13,11 +13,16 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+type Articulo struct {
+	Id     int
+	Nombre string
+	Precio float64
+}
+
 func main() {
 	// Crear la aplicación
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Ventana con Pestañas")
-	// Crear los contenidos para las pestañas
 
 	// Inicializar tabs con las pestañas iniciales
 	tabs := container.NewAppTabs(
@@ -57,6 +62,7 @@ func main() {
 }
 
 func createTab1() *container.TabItem {
+
 	// Crear widgets
 	entry := widget.NewEntry()
 	button := widget.NewButton("Cargar", func() {
