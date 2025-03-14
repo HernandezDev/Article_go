@@ -175,20 +175,45 @@ func Cargar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 }
 
 func Consultar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
-	//Entry
-	Entry := widget.NewEntry()
-	Entry.OnChanged = func(content string) {
-		// Filtrar contenido para permitir solo números y puntos decimales
-		Entry.SetText(filterInt(content))
-	}
+	var Id int
+	var Nombre string
+	var Precio string
 	//labels dinámicas
 	LabNombre := widget.NewLabel("")
 	LabPrecio := widget.NewLabel("")
 
+	//Entry
+	Entry := widget.NewEntry()
+	Entry.OnChanged = func(content string) {
+		// Filtrar contenido para permitir solo números
+		filteredContent := filterInt(content)
+		Entry.SetText(filteredContent)
+
+		// Convertir el texto filtrado a un int
+		if filteredContent != "" {
+			var err error
+			Id, err = strconv.Atoi(filteredContent)
+			if err != nil {
+				fmt.Println("Error de conversión:", err)
+				Id = 0 // Valor por defecto si hay error
+			}
+		} else {
+			Id = 0 // Valor por defecto si el texto está vacío
+		}
+		LabNombre.SetText("")
+		LabPrecio.SetText("")
+	}
+
 	//botones
 	BotConsultar := widget.NewButton("Consultar", func() {
 		// Acción del botón
-		fmt.Println("Botón presionado")
+		row := db.QueryRow("SELECT Nombre, Precio FROM Articulos WHERE Id = ?", Id)
+		err := row.Scan(&Nombre, &Precio)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+		LabNombre.SetText(Nombre)
+		LabPrecio.SetText(Precio)
 	})
 	BotEditar := widget.NewButton("Editar", func() {
 		// Acción del botón
