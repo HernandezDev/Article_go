@@ -1,11 +1,10 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"strconv"
 	"strings"
-
-	"database/sql"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
