@@ -19,7 +19,7 @@ func main() {
 	// Inicializar tabs con las pestañas iniciales
 	tabs := container.NewAppTabs(
 		createTab1(),
-		createTab2(), // Ahora tabs está definida
+		createTab2(),
 		createTab3(),
 	)
 
