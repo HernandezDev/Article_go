@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -15,32 +13,28 @@ func main() {
 	myWindow := myApp.NewWindow("Ventana con Pestañas")
 
 	// Crear los contenidos para las pestañas
-	tab1 := container.NewTabItem("Cargar Articulo", widget.NewLabel("Contenido de la Pestaña 1"))
-	tab2 := container.NewTabItem("Consultar por ID", widget.NewLabel("Contenido de la Pestaña 2"))
-	tab3 := container.NewTabItem("Listado Completo", widget.NewLabel("Contenido de la Pestaña 3"))
+	tabs := container.NewAppTabs(createTab1(),
+		createTab2(),
+		createTab3(),
+	)
 
-	// Crear las pestañas y añadirlas al contenedor
-	tabs := container.NewAppTabs(tab1, tab2, tab3)
-	// Obtener la pestaña seleccionada
-	tabs.OnSelected = func(selectedTab *container.TabItem) {
-		for index, tab := range tabs.Items {
-			if tab == selectedTab {
-				fmt.Printf("Índice de la pestaña seleccionada: %d\n", index)
-				break
-			}
-		}
-	}
-	// obtener la pestaña soltada
-	tabs.OnUnselected = func(unselectedTab *container.TabItem) {
-		for index, tab := range tabs.Items {
-			if tab == unselectedTab {
-				fmt.Printf("Índice de la pestaña soltada: %d\n", index)
-				break
-			}
-		}
-	}
 	// Configurar la ventana principal
 	myWindow.SetContent(tabs)
 	myWindow.Resize(fyne.NewSize(500, 300))
 	myWindow.ShowAndRun()
+}
+
+func createTab1() *container.TabItem {
+	a := widget.NewLabel("Contenido de la Pestaña 1")
+	return container.NewTabItem("Cargar Articulo", a)
+}
+
+func createTab2() *container.TabItem {
+	a := widget.NewLabel("Contenido de la Pestaña 2")
+	return container.NewTabItem("Consultar por ID", a)
+}
+
+func createTab3() *container.TabItem {
+	a := widget.NewLabel("Contenido de la Pestaña 3")
+	return container.NewTabItem("Mostrar Lista", a)
 }
