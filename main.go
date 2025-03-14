@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 
+	"database/sql"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
@@ -22,11 +25,27 @@ func main() {
 		createTab2(),
 		createTab3(),
 	)
-
+	// abrir base de datos
+	db, err := sql.Open("sqlite3", "./Base.db")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer db.Close()
+	// Crea una tabla
+	createTable :=
+		`CREATE TABLE IF NOT EXISTS Articulos(
+	Id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Precio REAL);`
+	_, err = db.Exec(createTable)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// Configurar la ventana principal
 	myWindow.SetContent(tabs)
 	myWindow.Resize(fyne.NewSize(854, 480))
 	myWindow.ShowAndRun()
+
 }
 
 func createTab1() *container.TabItem {
