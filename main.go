@@ -51,9 +51,9 @@ func main() {
 
 	// Inicializar tabs con las pestañas iniciales
 	tabs := container.NewAppTabs(
-		createTab1(db),
-		createTab2(db),
-		createTab3(db),
+		Cargar(db),
+		Consultar(db),
+		Mostrar(db),
 	)
 	// Configurar la ventana principal
 	myWindow.SetContent(tabs)
@@ -62,7 +62,7 @@ func main() {
 
 }
 
-func createTab1(db *sql.DB) *container.TabItem {
+func Cargar(db *sql.DB) *container.TabItem {
 
 	// Crear widgets
 	entry := widget.NewEntry()
@@ -86,7 +86,7 @@ func createTab1(db *sql.DB) *container.TabItem {
 	return container.NewTabItem("Cargar Articulo", a)
 }
 
-func createTab2(db *sql.DB) *container.TabItem {
+func Consultar(db *sql.DB) *container.TabItem {
 	button1 := widget.NewButton("Consultar", func() {
 		// Acción del botón
 		fmt.Println("Botón presionado")
@@ -111,7 +111,7 @@ func createTab2(db *sql.DB) *container.TabItem {
 	return container.NewTabItem("Consultar por ID", a)
 }
 
-func createTab3(db *sql.DB) *container.TabItem {
+func Mostrar(db *sql.DB) *container.TabItem {
 	a := widget.NewLabel("Contenido de la Pestaña 3")
 	return container.NewTabItem("Listado Completo", a)
 }
