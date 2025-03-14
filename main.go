@@ -14,10 +14,12 @@ func main() {
 	// Crear la aplicación
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Ventana con Pestañas")
-
 	// Crear los contenidos para las pestañas
-	tabs := container.NewAppTabs(createTab1(),
-		createTab2(),
+
+	// Inicializar tabs con las pestañas iniciales
+	tabs := container.NewAppTabs(
+		createTab1(),
+		createTab2(), // Ahora tabs está definida
 		createTab3(),
 	)
 
@@ -51,7 +53,27 @@ func createTab1() *container.TabItem {
 }
 
 func createTab2() *container.TabItem {
-	a := widget.NewLabel("Contenido de la Pestaña 2")
+	button1 := widget.NewButton("Consultar", func() {
+		// Acción del botón
+		fmt.Println("Botón presionado")
+	})
+	button2 := widget.NewButton("Editar", func() {
+		// Acción del botón
+		fmt.Println("Modo de edición activado")
+
+	})
+	button3 := widget.NewButton("Eliminar", func() {
+		// Acción del botón
+		fmt.Println("Botón presionado")
+	})
+
+	// Crear un contenedor para organizar los widgets
+	a := container.NewVBox(
+		layout.NewSpacer(),
+		button1,
+		button2,
+		button3,
+	)
 	return container.NewTabItem("Consultar por ID", a)
 }
 
