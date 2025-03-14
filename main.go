@@ -175,26 +175,39 @@ func Cargar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 }
 
 func Consultar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
-	button1 := widget.NewButton("Consultar", func() {
+	//Entry
+	Entry := widget.NewEntry()
+	//labels dinámicas
+	LabNombre := widget.NewLabel("")
+	LabPrecio := widget.NewLabel("")
+
+	//botones
+	BotConsultar := widget.NewButton("Consultar", func() {
 		// Acción del botón
 		fmt.Println("Botón presionado")
 	})
-	button2 := widget.NewButton("Editar", func() {
+	BotEditar := widget.NewButton("Editar", func() {
 		// Acción del botón
 		fmt.Println("Modo de edición activado")
 
 	})
-	button3 := widget.NewButton("Eliminar", func() {
+	BotEliminar := widget.NewButton("Eliminar", func() {
 		// Acción del botón
 		fmt.Println("Botón presionado")
 	})
 
 	// Crear un contenedor para organizar los widgets
 	a := container.NewVBox(
+		widget.NewLabel("Id:"),
+		Entry,
+		widget.NewLabel("Nombre:"),
+		container.NewHBox(layout.NewSpacer(), LabNombre, layout.NewSpacer()),
+		widget.NewLabel("Precio"),
+		container.NewHBox(layout.NewSpacer(), LabPrecio, layout.NewSpacer()),
 		layout.NewSpacer(),
-		button1,
-		button2,
-		button3,
+		BotConsultar,
+		BotEditar,
+		BotEliminar,
 	)
 	return container.NewTabItem("Consultar por ID", a)
 }
