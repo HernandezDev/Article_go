@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"database/sql"
@@ -9,6 +10,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	_ "github.com/mattn/go-sqlite3"
@@ -115,9 +117,9 @@ func main() {
 	}
 	// Inicializar tabs con las pestañas iniciales
 	tabs := container.NewAppTabs(
-		Cargar(db),
-		Consultar(db),
-		Mostrar(db),
+		Cargar(db, &myWindow),
+		Consultar(db, &myWindow),
+		Mostrar(db, &myWindow),
 	)
 	// Configurar la ventana principal
 	myWindow.SetContent(tabs)
@@ -126,24 +128,42 @@ func main() {
 
 }
 
-func Cargar(db *sql.DB) *container.TabItem {
-
+func Cargar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
+	var precio float64
 	// Crear widgets
-	entry := widget.NewEntry()
-	button := widget.NewButton("Cargar", func() {
-		// Acción del botón
-		fmt.Println("Botón presionado")
-	})
+	Entry := widget.NewEntry()
+
 	NumEntry := widget.NewEntry()
 	NumEntry.OnChanged = func(content string) {
 		// Filtrar contenido para permitir solo números y puntos decimales
 		NumEntry.SetText(filterNumeric(content))
 	}
+	button := widget.NewButton("Cargar", func() {
+		insertArticulo :=
+			`INSERT INTO Articulos(Nombre, Precio) VALUES (?, ?)`
+		// Convertir el texto a float64
+		precio, _ = strconv.ParseFloat(NumEntry.Text, 64)
+		_, err := db.Exec(insertArticulo, Entry.Text, precio)
+		if err != nil {
+			if err.Error() == "UNIQUE constraint failed: Articulos.Nombre" {
+				dialog.NewInformation("Error", "No se pueden repetir nombres.", *myWindow).Show()
+			} else {
+				dialog.NewError(err, *myWindow).Show()
+			}
 
+		} else {
+			dialog.NewInformation("Articulo", "Articulo cargado correctamente", *myWindow).Show()
+		}
+		// Restablecer valores después de la inserción
+		Entry.SetText("")
+		NumEntry.SetText("")
+		precio = 0
+
+	})
 	// Crear un contenedor para organizar los widgets
 	a := container.NewVBox(
 		widget.NewLabel("Nombre:"),
-		entry,
+		Entry,
 		widget.NewLabel("Precio:"),
 		NumEntry,
 		layout.NewSpacer(),
@@ -154,7 +174,7 @@ func Cargar(db *sql.DB) *container.TabItem {
 	return container.NewTabItem("Cargar Articulo", a)
 }
 
-func Consultar(db *sql.DB) *container.TabItem {
+func Consultar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 	button1 := widget.NewButton("Consultar", func() {
 		// Acción del botón
 		fmt.Println("Botón presionado")
@@ -179,7 +199,7 @@ func Consultar(db *sql.DB) *container.TabItem {
 	return container.NewTabItem("Consultar por ID", a)
 }
 
-func Mostrar(db *sql.DB) *container.TabItem {
+func Mostrar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 	a := widget.NewLabel("Contenido de la Pestaña 3")
 	return container.NewTabItem("Listado Completo", a)
 }
