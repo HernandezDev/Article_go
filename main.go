@@ -256,7 +256,7 @@ func filterNumeric(content string) string {
 
 func filterInt(content string) string {
 	return strings.Map(func(r rune) rune {
-		if r >= '0' && r <= '9' { // Permitir números
+		if r >= '0' && r <= '9' { // Permitir solo números
 			return r
 		}
 		return -1 // Eliminar caracteres no válidos
