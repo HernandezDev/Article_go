@@ -25,6 +25,7 @@ func main() {
 	// Crear la aplicación
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Ventana con Pestañas")
+	Canvas := myWindow.Canvas()
 
 	// abrir base de datos
 	db, err := sql.Open("sqlite3", "./Base.db")
@@ -117,7 +118,7 @@ func main() {
 	// Inicializar tabs con las pestañas iniciales
 	tabs := container.NewAppTabs(
 		Cargar(db, &myWindow),
-		Consultar(db, &myWindow),
+		Consultar(db, &myWindow, &Canvas),
 		Mostrar(db, &myWindow),
 	)
 	// Configurar la ventana principal
@@ -173,7 +174,7 @@ func Cargar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 	return container.NewTabItem("Cargar Articulo", a)
 }
 
-func Consultar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
+func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *container.TabItem {
 	var Id int
 	var Nombre string
 	var Precio string
@@ -215,8 +216,16 @@ func Consultar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 		LabPrecio.SetText(Precio)
 	})
 	BotEditar := widget.NewButton("Editar", func() {
-		// Acción del botón
-		fmt.Println("Modo de edición activado")
+		var popup *widget.PopUp
+		content := container.NewVBox(
+			widget.NewLabel("¡Hola desde el Popup!"),
+			widget.NewButton("Cerrar", func() {
+				popup.Hide()
+			}),
+		)
+
+		popup = widget.NewModalPopUp(content, *Canvas)
+		popup.Show() // Muestra el popup
 
 	})
 	BotEliminar := widget.NewButton("Eliminar", func() {
