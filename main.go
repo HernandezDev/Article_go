@@ -210,7 +210,12 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 		row := db.QueryRow("SELECT Nombre, Precio FROM Articulos WHERE Id = ?", Id)
 		err := row.Scan(&Nombre, &Precio)
 		if err != nil {
-			fmt.Println("Error:", err)
+			if err.Error() == "sql: no rows in result set" {
+				dialog.NewInformation("Error", "Articulo no encontrado.", *myWindow).Show()
+			} else {
+				dialog.NewError(err, *myWindow).Show()
+			}
+			Entry.SetText("")
 		}
 		LabNombre.SetText(Nombre)
 		LabPrecio.SetText(Precio)
