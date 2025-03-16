@@ -177,7 +177,7 @@ func Cargar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *container.TabItem {
 	var Id int
 	var Nombre string
-	var Precio string
+	var Precio float64
 
 	//labels dinámicas
 	LabNombre := widget.NewLabel("")
@@ -219,26 +219,26 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			}
 			//descartar varibles
 			Nombre = ""
-			Precio = ""
+			Precio = 0
 			Id = 0
 			Entry.SetText("")
 		} else {
 			LabNombre.SetText(Nombre)
-			LabPrecio.SetText(Precio)
+			LabPrecio.SetText(strconv.FormatFloat(Precio, 'f', -1, 64))
 		}
 
 	})
 
 	BotEditar := widget.NewButton("Editar", func() {
-		//var IdEditar:=0
+		//IdEditar:=0
 		var popup *widget.PopUp
 		IdEditarLabel := widget.NewLabel("")
 		NombreEditarEntry := widget.NewEntry()
 		PrecioEditarEntry := widget.NewEntry()
-		if Id != 0 && Nombre != "" && Precio != "" {
+		if Id != 0 && Nombre != "" && Precio != 0 {
 			IdEditarLabel.SetText(strconv.Itoa(Id))
 			NombreEditarEntry.SetText(Nombre)
-			PrecioEditarEntry.SetText(Precio)
+			PrecioEditarEntry.SetText(strconv.FormatFloat(Precio, 'f', -1, 64))
 		}
 		content := container.NewVBox(
 			container.NewGridWithColumns(2,
