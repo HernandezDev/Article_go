@@ -15,7 +15,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type Articulo struct {
+type Articulo struct { //eliminar si no se utiliza
 	Id     int
 	Nombre string
 	Precio float64
@@ -178,6 +178,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 	var Id int
 	var Nombre string
 	var Precio string
+	Encontrado := false //eliminar si no se utiliza
 	//labels dinámicas
 	LabNombre := widget.NewLabel("")
 	LabPrecio := widget.NewLabel("")
@@ -202,6 +203,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 		}
 		LabNombre.SetText("")
 		LabPrecio.SetText("")
+		Encontrado = false //eliminar si no se utiliza
 	}
 
 	//botones
@@ -220,10 +222,14 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			Precio = ""
 			Id = 0
 			Entry.SetText("")
+		} else {
+			Encontrado = true //elimira si no se utiliza
+			LabNombre.SetText(Nombre)
+			LabPrecio.SetText(Precio)
 		}
-		LabNombre.SetText(Nombre)
-		LabPrecio.SetText(Precio)
+
 	})
+
 	BotEditar := widget.NewButton("Editar", func() {
 		var popup *widget.PopUp
 		content := container.NewVBox(
@@ -259,7 +265,8 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 	})
 
 	// Crear un contenedor para organizar los widgets
-	a := container.NewVBox(
+
+	content := container.NewVBox(
 		container.NewGridWithColumns(2,
 			widget.NewLabel("Id:"), Entry,
 			widget.NewLabel("Nombre:"), LabNombre,
@@ -268,7 +275,11 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 		layout.NewSpacer(),
 		container.NewHBox(layout.NewSpacer(), BotConsultar, BotEditar, BotEliminar),
 	)
-	return container.NewTabItem("Consultar por ID", a)
+	if Encontrado {
+		fmt.Printf("Encontrado") // para usar la variable encontrado, eliminar si no la utilizo
+	}
+	return container.NewTabItem("Consultar por ID", content)
+
 }
 
 func Mostrar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
