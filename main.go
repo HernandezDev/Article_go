@@ -227,10 +227,18 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 	BotEditar := widget.NewButton("Editar", func() {
 		var popup *widget.PopUp
 		content := container.NewVBox(
-			widget.NewLabel("Funcion de editar"),
-			widget.NewButton("Cerrar", func() {
-				popup.Hide()
-			}),
+			container.NewGridWithColumns(2,
+				widget.NewLabel("Id"), widget.NewLabel(strconv.Itoa(Id)),
+			),
+			container.NewHBox(
+				layout.NewSpacer(),
+				widget.NewButton("Editar", func() {
+					popup.Hide()
+				}),
+				widget.NewButton("Cancelar", func() {
+					popup.Hide()
+				}),
+			),
 		)
 
 		popup = widget.NewModalPopUp(content, *Canvas)
