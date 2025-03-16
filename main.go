@@ -234,6 +234,8 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 		content := container.NewVBox(
 			container.NewGridWithColumns(2,
 				widget.NewLabel("Id"), widget.NewLabel(strconv.Itoa(Id)),
+				widget.NewLabel("Nombre"), widget.NewEntry(),
+				widget.NewLabel("Precio"), widget.NewEntry(),
 			),
 			container.NewHBox(
 				layout.NewSpacer(),
