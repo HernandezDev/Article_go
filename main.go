@@ -162,12 +162,12 @@ func Cargar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 	})
 	// Crear un contenedor para organizar los widgets
 	a := container.NewVBox(
-		widget.NewLabel("Nombre:"),
-		Entry,
-		widget.NewLabel("Precio:"),
-		NumEntry,
+		container.NewGridWithColumns(2,
+			widget.NewLabel("Nombre:"), Entry,
+			widget.NewLabel("Precio:"), NumEntry,
+		),
 		layout.NewSpacer(),
-		button,
+		container.NewHBox(layout.NewSpacer(), button),
 	)
 
 	// Retornar la pestaña con el contenedor como contenido
@@ -250,7 +250,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			widget.NewLabel("Precio:"), LabPrecio,
 		),
 		layout.NewSpacer(),
-		container.NewHBox(BotConsultar, BotEditar, BotEliminar),
+		container.NewHBox(layout.NewSpacer(), BotConsultar, BotEditar, BotEliminar),
 	)
 	return container.NewTabItem("Consultar por ID", a)
 }
