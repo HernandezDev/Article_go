@@ -178,7 +178,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 	var Id int
 	var Nombre string
 	var Precio string
-	Encontrado := false //eliminar si no se utiliza
+
 	//labels dinámicas
 	LabNombre := widget.NewLabel("")
 	LabPrecio := widget.NewLabel("")
@@ -203,7 +203,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 		}
 		LabNombre.SetText("")
 		LabPrecio.SetText("")
-		Encontrado = false //eliminar si no se utiliza
+
 	}
 
 	//botones
@@ -223,7 +223,6 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			Id = 0
 			Entry.SetText("")
 		} else {
-			Encontrado = true //elimira si no se utiliza
 			LabNombre.SetText(Nombre)
 			LabPrecio.SetText(Precio)
 		}
@@ -275,9 +274,6 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 		layout.NewSpacer(),
 		container.NewHBox(layout.NewSpacer(), BotConsultar, BotEditar, BotEliminar),
 	)
-	if Encontrado {
-		fmt.Printf("Encontrado") // para usar la variable encontrado, eliminar si no la utilizo
-	}
 	return container.NewTabItem("Consultar por ID", content)
 
 }
