@@ -230,12 +230,21 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 	})
 
 	BotEditar := widget.NewButton("Editar", func() {
+		//var IdEditar:=0
 		var popup *widget.PopUp
+		IdEditarLabel := widget.NewLabel("")
+		NombreEditarEntry := widget.NewEntry()
+		PrecioEditarEntry := widget.NewEntry()
+		if Id != 0 && Nombre != "" && Precio != "" {
+			IdEditarLabel.SetText(strconv.Itoa(Id))
+			NombreEditarEntry.SetText(Nombre)
+			PrecioEditarEntry.SetText(Precio)
+		}
 		content := container.NewVBox(
 			container.NewGridWithColumns(2,
-				widget.NewLabel("Id"), widget.NewLabel(strconv.Itoa(Id)),
-				widget.NewLabel("Nombre"), widget.NewEntry(),
-				widget.NewLabel("Precio"), widget.NewEntry(),
+				widget.NewLabel("Id"), IdEditarLabel,
+				widget.NewLabel("Nombre"), NombreEditarEntry,
+				widget.NewLabel("Precio"), PrecioEditarEntry,
 			),
 			container.NewHBox(
 				layout.NewSpacer(),
