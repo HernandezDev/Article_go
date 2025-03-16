@@ -123,7 +123,7 @@ func main() {
 	)
 	// Configurar la ventana principal
 	myWindow.SetContent(tabs)
-	myWindow.Resize(fyne.NewSize(854, 480))
+	myWindow.Resize(fyne.NewSize(640, 360))
 	myWindow.ShowAndRun()
 
 }
@@ -215,6 +215,10 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			} else {
 				dialog.NewError(err, *myWindow).Show()
 			}
+			//descartar varibles
+			Nombre = ""
+			Precio = ""
+			Id = 0
 			Entry.SetText("")
 		}
 		LabNombre.SetText(Nombre)
@@ -240,16 +244,13 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 
 	// Crear un contenedor para organizar los widgets
 	a := container.NewVBox(
-		widget.NewLabel("Id:"),
-		Entry,
-		widget.NewLabel("Nombre:"),
-		container.NewHBox(layout.NewSpacer(), LabNombre, layout.NewSpacer()),
-		widget.NewLabel("Precio:"),
-		container.NewHBox(layout.NewSpacer(), LabPrecio, layout.NewSpacer()),
+		container.NewGridWithColumns(2,
+			widget.NewLabel("Id:"), Entry,
+			widget.NewLabel("Nombre:"), LabNombre,
+			widget.NewLabel("Precio:"), LabPrecio,
+		),
 		layout.NewSpacer(),
-		BotConsultar,
-		BotEditar,
-		BotEliminar,
+		container.NewHBox(BotConsultar, BotEditar, BotEliminar),
 	)
 	return container.NewTabItem("Consultar por ID", a)
 }
