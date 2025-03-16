@@ -136,7 +136,7 @@ func Cargar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 	NumEntry := widget.NewEntry()
 	NumEntry.OnChanged = func(content string) {
 		// Filtrar contenido para permitir solo números y puntos decimales
-		NumEntry.SetText(filterNumeric(content))
+		NumEntry.SetText(filterFloat(content))
 	}
 	button := widget.NewButton("Cargar", func() {
 		insertArticulo :=
@@ -260,7 +260,7 @@ func Mostrar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 	return container.NewTabItem("Listado Completo", a)
 }
 
-func filterNumeric(content string) string {
+func filterFloat(content string) string {
 	return strings.Map(func(r rune) rune {
 		if (r >= '0' && r <= '9') || r == '.' { // Permitir números y el punto decimal
 			return r
