@@ -227,7 +227,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 	BotEditar := widget.NewButton("Editar", func() {
 		var popup *widget.PopUp
 		content := container.NewVBox(
-			widget.NewLabel("¡Hola desde el Popup!"),
+			widget.NewLabel("Funcion de editar"),
 			widget.NewButton("Cerrar", func() {
 				popup.Hide()
 			}),
@@ -238,8 +238,16 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 
 	})
 	BotEliminar := widget.NewButton("Eliminar", func() {
-		// Acción del botón
-		fmt.Println("Botón presionado")
+		var popup *widget.PopUp
+		content := container.NewVBox(
+			widget.NewLabel("Funcion de eliminar"),
+			widget.NewButton("Cerrar", func() {
+				popup.Hide()
+			}),
+		)
+
+		popup = widget.NewModalPopUp(content, *Canvas)
+		popup.Show() // Muestra el popup
 	})
 
 	// Crear un contenedor para organizar los widgets
