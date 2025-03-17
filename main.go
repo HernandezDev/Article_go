@@ -234,6 +234,10 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 		IdEditarLabel := widget.NewLabel("")
 		NombreEditarEntry := widget.NewEntry()
 		PrecioEditarEntry := widget.NewEntry()
+		PrecioEditarEntry.OnChanged = func(content string) {
+			// Filtrar contenido para permitir solo números y puntos decimales
+			PrecioEditarEntry.SetText(filterFloat(content))
+		}
 		if Id != 0 && Nombre != "" && Precio != 0 {
 			IdEditarLabel.SetText(strconv.Itoa(Id))
 			NombreEditarEntry.SetText(Nombre)
