@@ -355,8 +355,9 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 }
 
 func Mostrar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
-	a := widget.NewLabel("Contenido de la Pestaña 3")
-	return container.NewTabItem("Listado Completo", a)
+
+	content := widget.NewLabel("Contenido de la Pestaña 3")
+	return container.NewTabItem("Listado Completo", content)
 }
 
 func filterFloat(content string) string {
