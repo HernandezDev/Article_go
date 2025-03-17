@@ -232,7 +232,6 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 	FuncionConsulta = BotConsultar.OnTapped //capurar la funcion anonima del boton
 
 	BotEditar := widget.NewButton("Editar", func() {
-		//IdEditar:=0
 		var popup *widget.PopUp
 		IdEditarLabel := widget.NewLabel("")
 		NombreEditarEntry := widget.NewEntry()
@@ -284,9 +283,25 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 	})
 	BotEliminar := widget.NewButton("Eliminar", func() {
 		var popup *widget.PopUp
-		content := container.NewVBox(
-			widget.NewLabel("Funcion de eliminar"),
-			widget.NewButton("Cerrar", func() {
+		IdEliminarLabel := widget.NewLabel("")
+		NombreEliminarLabel := widget.NewLabel("")
+		PrecioEliminarLabel := widget.NewLabel("")
+		if Id != 0 && Nombre != "" && Precio != 0 {
+			IdEliminarLabel.SetText(strconv.Itoa(Id))
+			NombreEliminarLabel.SetText(Nombre)
+			PrecioEliminarLabel.SetText(strconv.FormatFloat(Precio, 'f', -1, 64))
+		}
+		content := container.NewGridWithColumns(2,
+			widget.NewLabel("Id:"),
+			IdEliminarLabel,
+			widget.NewLabel("Nombre:"),
+			NombreEliminarLabel,
+			widget.NewLabel("Precio:"),
+			PrecioEliminarLabel,
+			widget.NewButton("Eliminar", func() {
+				popup.Hide()
+			}),
+			widget.NewButton("Cancelar", func() {
 				popup.Hide()
 			}),
 		)
