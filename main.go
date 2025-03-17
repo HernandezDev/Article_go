@@ -183,7 +183,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 	LabNombre := widget.NewLabel("")
 	LabPrecio := widget.NewLabel("")
 
-	//Entry
+	//Entry para el id
 	Entry := widget.NewEntry()
 	Entry.OnChanged = func(content string) {
 		// Filtrar contenido para permitir solo números
@@ -192,18 +192,15 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 
 		// Convertir el texto filtrado a un int
 		if filteredContent != "" {
-			var err error
-			Id, err = strconv.Atoi(filteredContent)
-			if err != nil {
-				fmt.Println("Error de conversión:", err)
-				Id = 0 // Valor por defecto si hay error
-			}
+			Id, _ = strconv.Atoi(filteredContent)
 		} else {
 			Id = 0 // Valor por defecto si el texto está vacío
 		}
+		//resetear labels y variables cuando se cambia el id
 		LabNombre.SetText("")
 		LabPrecio.SetText("")
-
+		Nombre = ""
+		Precio = 0
 	}
 
 	//botones
