@@ -178,6 +178,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 	var Id int
 	var Nombre string
 	var Precio float64
+	var FuncionConsulta func()
 
 	//labels dinámicas
 	LabNombre := widget.NewLabel("")
@@ -228,6 +229,8 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 
 	})
 
+	FuncionConsulta = BotConsultar.OnTapped //capurar la funcion anonima del boton
+
 	BotEditar := widget.NewButton("Editar", func() {
 		//IdEditar:=0
 		var popup *widget.PopUp
@@ -262,7 +265,10 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 					_, err1 := db.Exec(updateArticulo, NombreEditarEntry.Text, precio, IdEditarLabel.Text)
 					if err1 != nil {
 						//popup de error
+						popup.Hide() //serrar el popup para mostrar el dialogo
 						dialog.NewError(err1, *myWindow).Show()
+					} else {
+						FuncionConsulta()
 					}
 					popup.Hide()
 				}),
