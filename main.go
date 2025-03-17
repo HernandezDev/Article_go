@@ -244,6 +244,9 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			IdEditarLabel.SetText(strconv.Itoa(Id))
 			NombreEditarEntry.SetText(Nombre)
 			PrecioEditarEntry.SetText(strconv.FormatFloat(Precio, 'f', -1, 64))
+		} else {
+			dialog.NewInformation("Error", "Seleccione articulo a editar.", *myWindow).Show()
+			return
 		}
 		content := container.NewVBox(
 			container.NewGridWithColumns(2,
@@ -298,6 +301,9 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			IdEliminarLabel.SetText(strconv.Itoa(Id))
 			NombreEliminarLabel.SetText(Nombre)
 			PrecioEliminarLabel.SetText(strconv.FormatFloat(Precio, 'f', -1, 64))
+		} else {
+			dialog.NewInformation("Error", "Seleccione articulo a eliminar.", *myWindow).Show()
+			return
 		}
 
 		content := container.NewGridWithColumns(2,
