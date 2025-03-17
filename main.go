@@ -252,6 +252,18 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			container.NewHBox(
 				layout.NewSpacer(),
 				widget.NewButton("Editar", func() {
+
+					precio, err := strconv.ParseFloat(PrecioEditarEntry.Text, 64)
+					if err != nil {
+						dialog.NewError(err, *myWindow).Show() //explicar mejor el error luego
+						return
+					}
+					updateArticulo := `UPDATE Articulos SET Nombre = ?, Precio = ? WHERE Id = ?`
+					_, err1 := db.Exec(updateArticulo, NombreEditarEntry.Text, precio, IdEditarLabel.Text)
+					if err1 != nil {
+						//popup de error
+						dialog.NewError(err1, *myWindow).Show()
+					}
 					popup.Hide()
 				}),
 				widget.NewButton("Cancelar", func() {
