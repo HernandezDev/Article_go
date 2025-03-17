@@ -214,11 +214,13 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			} else {
 				dialog.NewError(err, *myWindow).Show()
 			}
-			//descartar varibles
+			//Limpiar variables y laves en caso de error
 			Nombre = ""
 			Precio = 0
 			Id = 0
 			Entry.SetText("")
+			LabNombre.SetText("")
+			LabPrecio.SetText("")
 		} else {
 			LabNombre.SetText(Nombre)
 			LabPrecio.SetText(strconv.FormatFloat(Precio, 'f', -1, 64))
