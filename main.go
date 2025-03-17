@@ -257,7 +257,14 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 
 					precio, err := strconv.ParseFloat(PrecioEditarEntry.Text, 64)
 					if err != nil {
-						dialog.NewError(err, *myWindow).Show() //explicar mejor el error luego
+						if err.Error() == `strconv.ParseFloat: parsing "": invalid syntax` {
+							popup.Hide()
+							dialog.NewInformation("Error", "Seleccione articulo a editar.", *myWindow).Show()
+						} else {
+							popup.Hide()
+							dialog.NewError(err, *myWindow).Show()
+							fmt.Println("Error:", err)
+						}
 						return
 					}
 					updateArticulo := `UPDATE Articulos SET Nombre = ?, Precio = ? WHERE Id = ?`
@@ -266,6 +273,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 						//popup de error
 						popup.Hide() //serrar el popup para mostrar el dialogo
 						dialog.NewError(err1, *myWindow).Show()
+
 					} else {
 						FuncionConsulta()
 					}
@@ -291,6 +299,7 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			NombreEliminarLabel.SetText(Nombre)
 			PrecioEliminarLabel.SetText(strconv.FormatFloat(Precio, 'f', -1, 64))
 		}
+
 		content := container.NewGridWithColumns(2,
 			widget.NewLabel("Id:"),
 			IdEliminarLabel,
@@ -299,7 +308,27 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 			widget.NewLabel("Precio:"),
 			PrecioEliminarLabel,
 			widget.NewButton("Eliminar", func() {
-				popup.Hide()
+				IdEliminar, err := strconv.Atoi(IdEliminarLabel.Text)
+				if err != nil {
+					if err.Error() == `strconv.Atoi: parsing "": invalid syntax` {
+						popup.Hide()
+						dialog.NewInformation("Error", "Seleccione articulo a eliminar.", *myWindow).Show()
+					} else {
+						popup.Hide()
+						dialog.NewError(err, *myWindow).Show()
+					}
+				}
+				deleteArticulo := `DELETE FROM Articulos WHERE Id = ?`
+				_, err1 := db.Exec(deleteArticulo, IdEliminar)
+				if err1 != nil {
+					//popup de error
+					popup.Hide() //serrar el popup para mostrar el dialogo
+					dialog.NewError(err1, *myWindow).Show()
+					return
+				} else {
+					popup.Hide()
+					Entry.SetText("")
+				}
 			}),
 			widget.NewButton("Cancelar", func() {
 				popup.Hide()
