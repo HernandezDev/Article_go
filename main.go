@@ -387,7 +387,11 @@ func Mostrar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 		} // Refrescar el contenedor para actualizar la vista
 	})
 	scroleableGrid := container.NewScroll(gridContenedor)
-	return container.NewTabItem("Listado Completo", (container.NewBorder(button, nil, nil, nil, scroleableGrid)))
+	header := container.NewGridWithColumns(3,
+		widget.NewLabel("ID"), widget.NewLabel("Nombre"), widget.NewLabel("Precio"),
+	)
+	cabezera := container.NewVBox(button, header)
+	return container.NewTabItem("Listado Completo", (container.NewBorder(cabezera, nil, nil, nil, scroleableGrid)))
 }
 
 func filterFloat(content string) string {
