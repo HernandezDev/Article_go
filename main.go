@@ -362,8 +362,34 @@ func Consultar(db *sql.DB, myWindow *fyne.Window, Canvas *fyne.Canvas) *containe
 
 func Mostrar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 
-	content := widget.NewLabel("Contenido de la Pestaña 3")
-	return container.NewTabItem("Listado Completo", content)
+	gridContenedor := container.NewGridWithColumns(3)
+
+	// Botón para añadir un nuevo elemento
+	button := widget.NewButton("Actualizar", func() {
+		// Ejecuta la consulta y obtiene las filas.
+		rows, err := db.Query("SELECT Id, Nombre, Precio FROM Articulos")
+		if err != nil {
+			fmt.Println("Error al realizar la consulta:", err)
+			return
+		}
+		defer rows.Close()
+		for rows.Next() {
+			var id, nombre, precio string
+
+			err = rows.Scan(&id, &nombre, &precio)
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+			Elemento1 := widget.NewLabel(id)
+			Elemento2 := widget.NewLabel(nombre)
+			Elemento3 := widget.NewLabel(precio)
+			gridContenedor.Objects = append(gridContenedor.Objects, Elemento1, Elemento2, Elemento3) // Añadir elemento
+			gridContenedor.Refresh()
+		} // Refrescar el contenedor para actualizar la vista
+	})
+	scroleableGrid := container.NewScroll(gridContenedor)
+	return container.NewTabItem("Listado Completo", (container.NewBorder(button, nil, nil, nil, scroleableGrid)))
 }
 
 func filterFloat(content string) string {
