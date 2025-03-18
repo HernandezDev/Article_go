@@ -15,16 +15,10 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type Articulo struct { //eliminar si no se utiliza
-	Id     int
-	Nombre string
-	Precio float64
-}
-
 func main() {
 	// Crear la aplicación
 	myApp := app.New()
-	myWindow := myApp.NewWindow("Ventana con Pestañas")
+	myWindow := myApp.NewWindow("Article_GO")
 	Canvas := myWindow.Canvas()
 
 	// abrir base de datos
@@ -366,6 +360,10 @@ func Mostrar(db *sql.DB, myWindow *fyne.Window) *container.TabItem {
 
 	// Botón para añadir un nuevo elemento
 	button := widget.NewButton("Actualizar", func() {
+
+		// Limpiar todos los elementos existentes en el contenedor
+		gridContenedor.Objects = []fyne.CanvasObject{}
+
 		// Ejecuta la consulta y obtiene las filas.
 		rows, err := db.Query("SELECT Id, Nombre, Precio FROM Articulos")
 		if err != nil {
