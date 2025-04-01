@@ -21,8 +21,12 @@ func main() {
 	myWindow := myApp.NewWindow("Article_GO")
 	Canvas := myWindow.Canvas()
 
+	// Obtener la ruta de almacenamiento interna de la aplicación
+	storagePath := fyne.CurrentApp().Storage().RootURI().Path()
+	dbPath := storagePath + "/Base.db"
+
 	// abrir base de datos
-	db, err := sql.Open("sqlite3", "./Base.db")
+	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		dialog.NewError(err, myWindow).Show()
 		//return
