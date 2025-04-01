@@ -1,6 +1,3 @@
-Collecting workspace informationAquí tienes un ejemplo de readme.md para tu proyecto:
-
-
 # Article_GO
 
 Este proyecto es una aplicación de escritorio desarrollada en Go utilizando el framework Fyne. La aplicación permite gestionar artículos en una base de datos SQLite.
