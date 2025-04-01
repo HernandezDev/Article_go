@@ -24,7 +24,7 @@ func main() {
 	// abrir base de datos
 	db, err := sql.Open("sqlite3", "./Base.db")
 	if err != nil {
-		fmt.Println(err)
+		dialog.NewError(err, myWindow).Show()
 		return
 	}
 	defer db.Close()
@@ -34,7 +34,7 @@ func main() {
 	Id INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT NOT NULL, Precio REAL NOT NULL);`
 	_, err = db.Exec(createTable)
 	if err != nil {
-		fmt.Println(err)
+		dialog.NewError(err, myWindow).Show()
 		return
 	}
 	// crea un índice único para el campo Nombre
@@ -42,7 +42,7 @@ func main() {
 		`CREATE UNIQUE INDEX IF NOT EXISTS idx_nombre ON Articulos(Nombre);`
 	_, err = db.Exec(createIndexNombre)
 	if err != nil {
-		fmt.Println(err)
+		dialog.NewError(err, myWindow).Show()
 		return
 	}
 	// Trigger para evitar que se inserten registros con el campo Nombre vacío o solo con espacios
@@ -58,7 +58,7 @@ func main() {
 		END;`
 	_, err = db.Exec(createTriggerInsertNombre)
 	if err != nil {
-		fmt.Println(err)
+		dialog.NewError(err, myWindow).Show()
 		return
 	}
 	// Trigger para evitar que se actualicen registros con el campo Nombre vacío o solo con espacios
@@ -74,7 +74,7 @@ func main() {
 		END;`
 	_, err = db.Exec(createTriggerUpdateNombre)
 	if err != nil {
-		fmt.Println(err)
+		dialog.NewError(err, myWindow).Show()
 		return
 	}
 	// Trigger para evitar que se inserten registros con el campo Precio menor o igual a cero
@@ -90,7 +90,7 @@ func main() {
 		END;`
 	_, err = db.Exec(createTriggerInsertPrecio)
 	if err != nil {
-		fmt.Println(err)
+		dialog.NewError(err, myWindow).Show()
 		return
 	}
 	// Trigger para evitar que se actualicen registros con el campo Precio menor o igual a cero
@@ -106,7 +106,7 @@ func main() {
 		END;`
 	_, err = db.Exec(createTriggerUpdatePrecio)
 	if err != nil {
-		fmt.Println(err)
+		dialog.NewError(err, myWindow).Show()
 		return
 	}
 	// Inicializar tabs con las pestañas iniciales
