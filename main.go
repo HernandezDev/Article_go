@@ -25,7 +25,7 @@ func main() {
 	db, err := sql.Open("sqlite3", "./Base.db")
 	if err != nil {
 		dialog.NewError(err, myWindow).Show()
-		return
+		//return
 	}
 	defer db.Close()
 	// Crea una tabla
@@ -35,7 +35,7 @@ func main() {
 	_, err = db.Exec(createTable)
 	if err != nil {
 		dialog.NewError(err, myWindow).Show()
-		return
+		//return
 	}
 	// crea un índice único para el campo Nombre
 	createIndexNombre :=
@@ -43,7 +43,7 @@ func main() {
 	_, err = db.Exec(createIndexNombre)
 	if err != nil {
 		dialog.NewError(err, myWindow).Show()
-		return
+		//return
 	}
 	// Trigger para evitar que se inserten registros con el campo Nombre vacío o solo con espacios
 	createTriggerInsertNombre :=
@@ -59,7 +59,7 @@ func main() {
 	_, err = db.Exec(createTriggerInsertNombre)
 	if err != nil {
 		dialog.NewError(err, myWindow).Show()
-		return
+		//return
 	}
 	// Trigger para evitar que se actualicen registros con el campo Nombre vacío o solo con espacios
 	createTriggerUpdateNombre :=
@@ -75,7 +75,7 @@ func main() {
 	_, err = db.Exec(createTriggerUpdateNombre)
 	if err != nil {
 		dialog.NewError(err, myWindow).Show()
-		return
+		//return
 	}
 	// Trigger para evitar que se inserten registros con el campo Precio menor o igual a cero
 	createTriggerInsertPrecio :=
@@ -91,7 +91,7 @@ func main() {
 	_, err = db.Exec(createTriggerInsertPrecio)
 	if err != nil {
 		dialog.NewError(err, myWindow).Show()
-		return
+		//return
 	}
 	// Trigger para evitar que se actualicen registros con el campo Precio menor o igual a cero
 	createTriggerUpdatePrecio :=
@@ -107,7 +107,7 @@ func main() {
 	_, err = db.Exec(createTriggerUpdatePrecio)
 	if err != nil {
 		dialog.NewError(err, myWindow).Show()
-		return
+		//return
 	}
 	// Inicializar tabs con las pestañas iniciales
 	tabs := container.NewAppTabs(
