@@ -20,6 +20,12 @@ Las dependencias del proyecto están especificadas en el archivo `go.mod`:
 
 ## Instalación
 
+### Opción 1: Descargar la aplicación ya compilada
+
+Puedes descargar tanto la versión de escritorio como la de Android desde la página de [releases](https://github.com/HernandezDev/Article_go/releases/tag/v0.2).
+
+### Opción 2: Compilar desde el código fuente
+
 1. Clona el repositorio:
     ```sh
     git clone <URL_DEL_REPOSITORIO>
@@ -44,8 +50,7 @@ go run main.go
 
 ### En Android
 
-Para compilar y ejecutar la aplicación en Android, asegúrate de tener configurado el entorno de desarrollo para Android con Go y Fyne.
-Cambia a la rama `android` del repositorio antes de compilar:
+Para compilar y ejecutar la aplicación en Android, asegúrate de tener configurado el entorno de desarrollo para Android con Go y Fyne. Además, cambia a la rama `android` del repositorio antes de compilar:
 ```sh
 git checkout android
 ```
@@ -53,6 +58,7 @@ Luego, utiliza el siguiente comando para compilar:
 ```sh
 fyne package -os android -appID com.example.article_go
 ```
+
 ## Funcionalidades
 
 ### Cargar Artículo
