@@ -1,6 +1,6 @@
 # Article_GO
 
-Este proyecto es una aplicación de escritorio desarrollada en Go utilizando el framework Fyne. La aplicación permite gestionar artículos en una base de datos SQLite.
+Este proyecto es una aplicación desarrollada en Go utilizando el framework Fyne. La aplicación permite gestionar artículos en una base de datos SQLite y está disponible tanto para escritorio como para dispositivos Android.
 
 ## Estructura del Proyecto
 
@@ -31,15 +31,28 @@ Las dependencias del proyecto están especificadas en el archivo `go.mod`:
 3. Instala las dependencias:
     ```sh
     go mod tidy
-  
+    ```
 
 ## Uso
 
-Para ejecutar la aplicación, utiliza el siguiente comando:
+### En Escritorio
+
+Para ejecutar la aplicación en un entorno de escritorio, utiliza el siguiente comando:
 ```sh
 go run main.go
 ```
 
+### En Android
+
+Para compilar y ejecutar la aplicación en Android, asegúrate de tener configurado el entorno de desarrollo para Android con Go y Fyne.
+Cambia a la rama `android` del repositorio antes de compilar:
+```sh
+git checkout android
+```
+Luego, utiliza el siguiente comando para compilar:
+```sh
+fyne package -os android -appID com.example.article_go
+```
 ## Funcionalidades
 
 ### Cargar Artículo
