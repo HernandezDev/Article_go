@@ -22,7 +22,7 @@ func main() {
 	Canvas := myWindow.Canvas()
 
 	// Obtener la ruta de almacenamiento interna de la aplicación
-	storagePath := fyne.CurrentApp().Storage().RootURI().Path()
+	storagePath := getStoragePath()
 	dbPath := storagePath + "/Base.db"
 
 	// abrir base de datos
@@ -414,4 +414,8 @@ func filterInt(content string) string {
 		}
 		return -1 // Eliminar caracteres no válidos
 	}, content)
+}
+
+func getStoragePath() string {
+	return fyne.CurrentApp().Storage().RootURI().Path()
 }
