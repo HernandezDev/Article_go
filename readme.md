@@ -48,12 +48,15 @@ Para ejecutar la aplicación en un entorno de escritorio, utiliza el siguiente c
 go run main.go
 ```
 
+Si deseas generar un archivo ejecutable:
+```sh
+go build -o Article_GO.exe main.go
+```
+Esto creará el archivo `Article_GO.exe` en el directorio actual.
+
 ### En Android
 
-Para compilar y ejecutar la aplicación en Android, asegúrate de tener configurado el entorno de desarrollo para Android con Go y Fyne. Además, cambia a la rama `android` del repositorio antes de compilar:
-```sh
-git checkout android
-```
+Para compilar y ejecutar la aplicación en Android, asegúrate de tener configurado el entorno de desarrollo para Android con Go y Fyne.  
 Luego, utiliza el siguiente comando para compilar:
 ```sh
 fyne package -os android -appID com.example.article_go
