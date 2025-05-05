@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"runtime"
+	"os"
+	"path/filepath"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -417,5 +420,20 @@ func filterInt(content string) string {
 }
 
 func getStoragePath() string {
-	return fyne.CurrentApp().Storage().RootURI().Path()
+	if runtime.GOOS == "android" {
+		return fyne.CurrentApp().Storage().RootURI().Path()
+	}
+	// Para Windows y otros sistemas de escritorio
+	appData := os.Getenv("APPDATA")
+	if appData != "" {
+		appDir := filepath.Join(appData, "Article_GO")
+		os.MkdirAll(appDir, os.ModePerm)
+		return appDir
+	}
+	// Fallback: carpeta del ejecutable
+	exePath, err := os.Executable()
+	if err != nil {
+		return "." // Carpeta actual
+	}
+	return filepath.Dir(exePath)
 }
