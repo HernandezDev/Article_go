@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"runtime"
+	"os"
+	"path/filepath"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -21,8 +24,12 @@ func main() {
 	myWindow := myApp.NewWindow("Article_GO")
 	Canvas := myWindow.Canvas()
 
+	// Obtener la ruta de almacenamiento interna de la aplicación
+	storagePath := getStoragePath()
+	dbPath := storagePath + "/Base.db"
+
 	// abrir base de datos
-	db, err := sql.Open("sqlite3", "./Base.db")
+	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		dialog.NewError(err, myWindow).Show()
 		//return
@@ -410,4 +417,23 @@ func filterInt(content string) string {
 		}
 		return -1 // Eliminar caracteres no válidos
 	}, content)
+}
+
+func getStoragePath() string {
+	if runtime.GOOS == "android" {
+		return fyne.CurrentApp().Storage().RootURI().Path()
+	}
+	// Para Windows y otros sistemas de escritorio
+	appData := os.Getenv("APPDATA")
+	if appData != "" {
+		appDir := filepath.Join(appData, "Article_GO")
+		os.MkdirAll(appDir, os.ModePerm)
+		return appDir
+	}
+	// Fallback: carpeta del ejecutable
+	exePath, err := os.Executable()
+	if err != nil {
+		return "." // Carpeta actual
+	}
+	return filepath.Dir(exePath)
 }
